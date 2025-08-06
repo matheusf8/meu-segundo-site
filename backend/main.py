@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from backend.database import Base, engine
-from backend.routers import usuario
+from database import Base, engine  # SEM backend. na frente
+from routers import usuario        # SEM backend. na frente
 import os
 
 app = FastAPI()
