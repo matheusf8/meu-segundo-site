@@ -1,9 +1,15 @@
 {
-  "build": {
-    "builder": "NIXPACKS"
-  },
-  "deploy": {
-    "startCommand": "uvicorn backend.main:app --host 0.0.0.0 --port $PORT",
-    "healthcheckPath": "/docs"
-  }
+  "version": 2,
+  "builds": [
+    {
+      "src": "backend/main.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "backend/main.py"
+    }
+  ]
 }
