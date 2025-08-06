@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
-from .models import Usuario, Registro
-from .schemas import UsuarioCreate, RegistroCreate, RegistroUpdate
+from models import Usuario, Registro
+from schemas import UsuarioCreate, RegistroCreate, RegistroUpdate
 from fastapi import HTTPException
 
 # Usuário
