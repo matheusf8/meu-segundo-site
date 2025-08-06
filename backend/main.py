@@ -18,11 +18,12 @@ app.add_middleware(
 # Cria as tabelas no banco de dados
 Base.metadata.create_all(bind=engine)
 
+# Rotas da API PRIMEIRO
 app.include_router(usuario.router)
 
-# Sirva os arquivos do React build
-app.mount("/", StaticFiles(directory="../frontend/dist", html=True), name="static")
-
-@app.get("/")
+@app.get("/api")
 def read_root():
     return {"message": "Bem-vindo ao backend do Meu Diário!"}
+
+# Sirva os arquivos do React build POR ÚLTIMO
+app.mount("/", StaticFiles(directory="../frontend/dist", html=True), name="static")
