@@ -1,0 +1,135 @@
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  background: linear-gradient(135deg, #232526 0%, #414345 100%);
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+.folha-caderno {
+  background: #232526;
+  border: 2px solid #e2c98f;
+  border-radius: 20px;
+  padding: 20px;
+  width: 520px;
+  max-width: 95vw;
+  min-width: 220px;
+  min-height: 620px;
+  box-shadow: 0 4px 24px #0007;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: 32px;
+}
+
+.folha-caderno h2 {
+  color: #e2c98f;
+  font-family: 'Georgia', serif;
+  font-size: 2.2rem;
+  margin-bottom: 18px;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+.folha-textarea {
+  width: 100%;
+  min-height: 180px;
+  max-height: 220px;
+  font-size: 1.08rem;
+  font-family: 'Courier New', Courier, monospace;
+  background: #232526;
+  color: #ffe9b3;
+  border: 1px solid #e2c98f;
+  border-radius: 10px;
+  padding: 12px;
+  resize: vertical;
+  line-height: 2;
+  box-sizing: border-box;
+  outline: none;
+  margin-bottom: 14px;
+  overflow-y: auto;
+}
+
+.folha-data {
+  text-align: right;
+  font-size: 1rem;
+  color: #e2c98f;
+  margin-bottom: 18px;
+  width: 100%;
+}
+
+.xp-btn {
+  width: 100%;
+  font-size: 1.08rem;
+  height: 44px;
+  margin-bottom: 12px;
+  background: linear-gradient(90deg, #2056a5 0%, #232526 100%);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: 'Tahoma', Arial, sans-serif;
+  transition: background 0.2s ease-in-out;
+  box-sizing: border-box;
+}
+
+.xp-btn:hover {
+  background: linear-gradient(90deg, #232526 0%, #2056a5 100%);
+}
+
+/* Container com rolagem interna para lista de registros */
+.folha-lista-registros {
+  width: 100%;
+  max-height: 340px; /* ajuste conforme necessário */
+  overflow-y: auto;
+  margin-bottom: 24px;
+  padding-right: 4px;
+}
+
+/* Feedback de sucesso/erro */
+.folha-feedback {
+  margin-top: 16px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.folha-feedback.sucesso {
+  color: #fff; /* branco */
+}
+
+.folha-feedback.erro {
+  color: #2056a5;
+}
+
+/* Responsividade para celular */
+@media (max-width: 800px) {
+  .folha-caderno {
+    width: 98vw;
+    min-width: 140px;
+    padding: 8px;
+    min-height: 180px;
+    margin-top: 16px;
+  }
+  .folha-caderno h2 {
+    font-size: 1.2rem;
+  }
+  .folha-textarea {
+    font-size: 0.95rem;
+    min-height: 80px;
+    max-height: 120px;
+    padding: 6px;
+  }
+  .xp-btn {
+    font-size: 0.95rem;
+    height: 32px;
+  }
+  .folha-lista-registros {
+    max-height: 180px;
+  }
+}

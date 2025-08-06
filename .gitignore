@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+*.sqlite3
+
+# FastAPI/Uvicorn logs
+*.log
+
+# Vite/React
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+
+# VSCode
+.vscode/
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
