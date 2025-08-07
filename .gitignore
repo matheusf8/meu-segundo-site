@@ -5,6 +5,7 @@ __pycache__/
 *.pyd
 .env
 *.sqlite3
+*.db                    # Adicionar - evita subir banco SQLite
 
 # FastAPI/Uvicorn logs
 *.log
@@ -13,6 +14,12 @@ __pycache__/
 frontend/node_modules/
 frontend/dist/
 frontend/.env
+frontend/.env.local     # Adicionar
+
+# Firebase (não subir arquivos de cache)
+.firebase/
+firebase-debug.log     # Adicionar
+firestore-debug.log    # Adicionar
 
 # VSCode
 .vscode/
@@ -20,3 +27,7 @@ frontend/.env
 # Sistema operacional
 .DS_Store
 Thumbs.db
+
+# Dependências Python
+backend/venv/          # Adicionar se usar venv
+backend/.env           # Adicionar
