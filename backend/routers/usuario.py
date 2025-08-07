@@ -1,10 +1,20 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
-from ..database import SessionLocal
-from ..models import Usuario
-from .. import schemas  # Corrigir este import
-from .. import crud     # Corrigir este import
+
+# Imports que funcionam tanto local quanto no Render
+try:
+    # Tenta import relativo (desenvolvimento local)
+    from ..database import SessionLocal
+    from ..models import Usuario
+    from .. import schemas
+    from .. import crud
+except ImportError:
+    # Se falhar, usa import absoluto (produção Render)
+    from database import SessionLocal
+    from models import Usuario
+    import schemas
+    import crud
 
 router = APIRouter()
 

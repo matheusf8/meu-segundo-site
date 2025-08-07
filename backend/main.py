@@ -1,14 +1,22 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .database import Base, engine  # Adicione o ponto
-from .routers import usuario        # Adicione o ponto
 import os
+
+# Imports que funcionam tanto local quanto no Render
+try:
+    # Tenta import relativo (desenvolvimento local)
+    from .database import Base, engine
+    from .routers import usuario
+except ImportError:
+    # Se falhar, usa import absoluto (produção Render)
+    from database import Base, engine
+    from routers import usuario
 
 app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://meu-diario-e513c.web.app", "http://localhost:5173"], # Firebase + local dev
+    allow_origins=["https://meu-diario-e513c.web.app", "http://localhost:5173"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

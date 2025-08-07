@@ -1,7 +1,14 @@
 from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey
-from .database import Base  # Adicionar ponto
 from sqlalchemy.orm import relationship
 from datetime import datetime
+
+# Imports que funcionam tanto local quanto no Render
+try:
+    # Tenta import relativo (desenvolvimento local)
+    from .database import Base
+except ImportError:
+    # Se falhar, usa import absoluto (produção Render)
+    from database import Base
 
 class Usuario(Base):
     __tablename__ = "usuarios"

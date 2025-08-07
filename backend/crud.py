@@ -1,8 +1,16 @@
 from sqlalchemy.orm import Session
-from .models import Usuario, Registro  # Adicionar ponto
-from . import schemas                  # Adicionar ponto
 from passlib.context import CryptContext
-from fastapi import HTTPException  # Adicionar esta linha
+from fastapi import HTTPException
+
+# Imports que funcionam tanto local quanto no Render
+try:
+    # Tenta import relativo (desenvolvimento local)
+    from .models import Usuario, Registro
+    from . import schemas
+except ImportError:
+    # Se falhar, usa import absoluto (produção Render)
+    from models import Usuario, Registro
+    import schemas
 
 # Configuração do contexto do CryptContext
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
