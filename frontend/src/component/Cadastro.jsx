@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import "../estilos/login-xp.css";
+import "../estilos/folha-caderno.css";
+import { api } from '../config/api.js';
 
 function Cadastro({ irParaLogin }) {
   const [email, setEmail] = useState("");
@@ -9,31 +10,31 @@ function Cadastro({ irParaLogin }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMensagem("");
+    
+    // ✅ VALIDAÇÃO MELHORADA
     if (senha.length !== 6) {
       setMensagem("A senha deve ter exatamente 6 dígitos!");
       return;
     }
+    
+    if (!/^\d{6}$/.test(senha)) {
+      setMensagem("A senha deve conter apenas números!");
+      return;
+    }
 
     try {
-      const resposta = await fetch("http://127.0.0.1:8000/cadastro", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, senha }),
-      });
-
-      if (resposta.ok) {
+      const resposta = await api.post("/cadastro", { email, senha });
+      
+      if (resposta.mensagem) {
         setMensagem("Cadastro realizado com sucesso!");
         setTimeout(() => {
           irParaLogin();
         }, 2000);
-      } else {
-        const erro = await resposta.json();
-        setMensagem(erro.detail || "Erro ao cadastrar.");
       }
-    } catch {
-      setMensagem("Erro ao conectar ao servidor.");
+    } catch (error) {
+      // ✅ MELHOR TRATAMENTO DE ERRO
+      console.error("Erro no cadastro:", error);
+      setMensagem(error.response?.data?.mensagem || "Erro ao conectar ao servidor.");
     }
   };
 
@@ -43,17 +44,21 @@ function Cadastro({ irParaLogin }) {
         <h2 className="xp-title">Meu Diário - Cadastro</h2>
         <form onSubmit={handleSubmit}>
           <div className="xp-form-group">
-            <label>E-mail:</label>
+            <label className="xp-label">E-mail:</label>
             <input
+              className="xp-input"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              placeholder="Digite seu e-mail"
             />
           </div>
+          
           <div className="xp-form-group">
-            <label>Senha (6 dígitos):</label>
+            <label className="xp-label">Senha (6 dígitos):</label>
             <input
+              className="xp-input"
               type="password"
               value={senha}
               onChange={(e) => setSenha(e.target.value)}
@@ -62,20 +67,22 @@ function Cadastro({ irParaLogin }) {
               minLength={6}
               pattern="\d{6}"
               title="Digite exatamente 6 números"
+              placeholder="000000"
             />
           </div>
+          
           <button className="xp-btn" type="submit">Cadastrar</button>
           <button
             className="xp-btn"
             type="button"
-            style={{ marginTop: "8px" }}
             onClick={irParaLogin}
           >
             Voltar
           </button>
         </form>
+        
         {mensagem && (
-          <div style={{ marginTop: "16px", color: "#2056a5", textAlign: "center" }}>
+          <div className="xp-mensagem">
             {mensagem}
           </div>
         )}

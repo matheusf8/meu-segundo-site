@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { api } from '../config/api.js';  // ✅ ADICIONAR IMPORT
 import "../estilos/folha-caderno.css";
 
 function NovoRegistro({ usuario, voltar }) {
@@ -14,23 +15,20 @@ function NovoRegistro({ usuario, voltar }) {
       setSucesso(false);
       return;
     }
+    
     try {
-      const resposta = await fetch("http://127.0.0.1:8000/registro", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: usuario.email,
-          texto,
-          data: dataFormatada,
-        }),
+      // ✅ SUBSTITUIR por api.post
+      const resposta = await api.post("/registro", {
+        email: usuario.email,
+        texto,
+        data: dataFormatada,
       });
-      if (resposta.ok) {
+      
+      // api.post já retorna JSON diretamente
+      if (resposta) {
         setMensagem("Registro salvo com sucesso!");
         setSucesso(true);
         setTexto("");
-      } else {
-        setMensagem("Erro ao salvar registro.");
-        setSucesso(false);
       }
     } catch {
       setMensagem("Erro ao conectar ao servidor.");

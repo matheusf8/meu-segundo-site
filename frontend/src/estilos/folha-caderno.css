@@ -1,74 +1,95 @@
-body {
-  min-height: 100vh;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  background: linear-gradient(135deg, #232526 0%, #414345 100%);
-  margin: 0;
-  padding: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+/* ===== RESET GLOBAL ===== */
+* {
   box-sizing: border-box;
-  overflow-y: auto;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;                     /* ✅ VOLTOU O OVERFLOW HIDDEN */
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  align-items: flex-start;              /* ✅ MANTÉM O FLEX-START */
+  justify-content: center;
+  background: linear-gradient(135deg, #232526 0%, #414345 100%);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  -webkit-user-select: none;
+  user-select: none;
+  padding-top: 40px;                    /* ✅ MANTÉM O ESPAÇAMENTO */
+}
+
+/* ===== CONTAINER PRINCIPAL (NOVO REGISTRO) ===== */
 .folha-caderno {
   background: #232526;
   border: 2px solid #e2c98f;
   border-radius: 20px;
-  padding: 20px;
-  width: 520px;
-  max-width: 95vw;
+  padding: 18px;
+  width: 450px;
+  max-width: 90vw;
   min-width: 220px;
-  min-height: 620px;
-  box-shadow: 0 4px 24px #0007;
+  max-height: 75vh;                     /* ✅ REDUZIU UM POUCO POR CAUSA DO PADDING-TOP */
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  margin-top: 32px;
+  margin: 0;
+  overflow-y: auto;
+  /* ✅ OU ADICIONE MARGIN-TOP AQUI SE PREFERIR */
+  /* margin-top: 40px; */
 }
 
 .folha-caderno h2 {
   color: #e2c98f;
   font-family: 'Georgia', serif;
-  font-size: 2.2rem;
-  margin-bottom: 18px;
+  font-size: 2rem;
+  margin-top: 20px;                     /* ✅ ADICIONAR ESPAÇO NO TOPO */
+  margin-bottom: 16px;
   text-align: center;
   letter-spacing: 1px;
 }
 
+/* ===== TEXTAREA ===== */
 .folha-textarea {
   width: 100%;
-  min-height: 180px;
-  max-height: 220px;
-  font-size: 1.08rem;
+  min-height: 160px;
+  max-height: 200px;
+  font-size: 1.05rem;
   font-family: 'Courier New', Courier, monospace;
   background: #232526;
   color: #ffe9b3;
   border: 1px solid #e2c98f;
   border-radius: 10px;
   padding: 12px;
-  resize: vertical;
-  line-height: 2;
-  box-sizing: border-box;
+  resize: none;
+  line-height: 1.8;
   outline: none;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
   overflow-y: auto;
 }
 
+/* ===== DATA ===== */
 .folha-data {
   text-align: right;
-  font-size: 1rem;
+  font-size: 0.95rem;
   color: #e2c98f;
-  margin-bottom: 18px;
+  margin-bottom: 16px;
   width: 100%;
 }
 
+/* ===== BOTÕES ===== */
 .xp-btn {
   width: 100%;
-  font-size: 1.08rem;
-  height: 44px;
-  margin-bottom: 12px;
+  font-size: 1.05rem;
+  height: 40px;
+  margin-bottom: 10px;
   background: linear-gradient(90deg, #2056a5 0%, #232526 100%);
   color: #fff;
   border: none;
@@ -76,60 +97,176 @@ body {
   cursor: pointer;
   font-family: 'Tahoma', Arial, sans-serif;
   transition: background 0.2s ease-in-out;
-  box-sizing: border-box;
+  touch-action: manipulation;
 }
 
 .xp-btn:hover {
   background: linear-gradient(90deg, #232526 0%, #2056a5 100%);
 }
 
-/* Container com rolagem interna para lista de registros */
+/* ===== LISTA DE REGISTROS ===== */
 .folha-lista-registros {
   width: 100%;
-  max-height: 340px; /* ajuste conforme necessário */
+  max-height: 320px;
   overflow-y: auto;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   padding-right: 4px;
 }
 
-/* Feedback de sucesso/erro */
+/* ===== FEEDBACK ===== */
 .folha-feedback {
-  margin-top: 16px;
+  margin-top: 14px;
   text-align: center;
   font-weight: bold;
 }
 
 .folha-feedback.sucesso {
-  color: #fff; /* branco */
+  color: #fff;
 }
 
 .folha-feedback.erro {
   color: #2056a5;
 }
 
-/* Responsividade para celular */
-@media (max-width: 800px) {
-  .folha-caderno {
-    width: 98vw;
-    min-width: 140px;
-    padding: 8px;
-    min-height: 180px;
-    margin-top: 16px;
-  }
-  .folha-caderno h2 {
-    font-size: 1.2rem;
-  }
-  .folha-textarea {
-    font-size: 0.95rem;
-    min-height: 80px;
-    max-height: 120px;
-    padding: 6px;
-  }
-  .xp-btn {
-    font-size: 0.95rem;
-    height: 32px;
-  }
-  .folha-lista-registros {
-    max-height: 180px;
-  }
+/* ===== LOGIN/CADASTRO - ESTILO XP ===== */
+.xp-login-container {
+  width: 100vw;
+  height: 100vh;                        /* ✅ JÁ TEM */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #0066cc 0%, #004499 100%);
+  overflow: hidden;
+  position: fixed;                      /* ✅ ADICIONAR PARA COBRIR TUDO */
+  top: 0;                               /* ✅ ADICIONAR */
+  left: 0;                              /* ✅ ADICIONAR */
 }
+
+.xp-login-box {
+  background: #e5e5e5;
+  border: 2px solid #0066cc;
+  border-radius: 20px;
+  padding: 40px 24px;
+  width: 360px;
+  max-width: 90vw;
+  min-height: 400px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  position: relative;
+}
+
+.xp-title {
+  color: #004499 !important;
+  font-family: 'Tahoma', Arial, sans-serif;
+  font-size: 2.2rem;
+  margin-bottom: 15px;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* ===== MENSAGEM DE BOAS-VINDAS ===== */
+.xp-login-box p,
+.xp-login-box p *,
+.welcome-message,
+.welcome-message * {
+  color: #333333 !important;
+  font-family: 'Tahoma', Arial, sans-serif !important;
+  font-size: 1rem !important;
+  text-align: center !important;
+  font-weight: 500 !important;
+  margin-top: 10px !important;
+  margin-bottom: 25px !important;
+  padding: 0 15px !important;
+}
+
+/* ===== INPUTS ===== */
+.xp-input {
+  width: 100%;
+  height: 48px;
+  font-size: 1.1rem;
+  background: #ffffff;
+  border: 1px solid #999999;
+  border-radius: 6px;
+  padding: 0 16px;
+  margin-bottom: 16px;
+  outline: none;
+  font-family: 'Tahoma', Arial, sans-serif;
+}
+
+.xp-input:focus {
+  border-color: #0066cc;
+  box-shadow: 0 0 5px rgba(0, 102, 204, 0.3);
+}
+
+/* ===== SCROLL INVISÍVEL ===== */
+.folha-caderno,
+.folha-textarea,
+.folha-lista-registros {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.folha-caderno::-webkit-scrollbar,
+.folha-textarea::-webkit-scrollbar,
+.folha-lista-registros::-webkit-scrollbar {
+  display: none;
+}
+
+/* ===== RESPONSIVIDADE ===== */
+@media (max-width: 768px) and (min-width: 601px) {
+  .folha-caderno { width: 85vw; padding: 16px; max-height: 80vh; }
+  .xp-login-box { max-width: 350px; padding: 20px; }
+}
+
+@media (max-width: 600px) and (min-width: 481px) {
+  .folha-caderno { width: 90vw; padding: 14px; max-height: 75vh; }
+  .folha-caderno h2 { font-size: 1.7rem; }
+  .xp-btn { height: 38px; }
+  .xp-login-box { max-width: 320px; padding: 18px; }
+  .xp-title { font-size: 1.8rem; }
+  .xp-input { height: 44px; font-size: 16px; }
+}
+
+@media (max-width: 480px) {
+  body { padding: 5px 0; }
+  .folha-caderno { width: 95vw; padding: 12px; max-height: 85vh; margin: 0; }
+  .folha-caderno h2 { font-size: 1.4rem; margin-bottom: 12px; }
+  .folha-textarea { font-size: 16px; min-height: 120px; max-height: 150px; padding: 10px; }
+  .xp-btn { font-size: 16px; height: 44px; }
+  .folha-lista-registros { max-height: 180px; }
+  .xp-login-box { width: 90vw; max-width: 300px; padding: 16px; }
+  .xp-title { font-size: 1.5rem; margin-bottom: 14px; }
+  .xp-input { height: 44px; font-size: 16px; padding: 0 12px; }
+}
+
+@media (max-width: 414px) {
+  .folha-caderno { width: 96vw; padding: 10px; max-height: 80vh; }
+  .folha-caderno h2 { font-size: 1.2rem; }
+  .folha-textarea { font-size: 16px; min-height: 100px; max-height: 120px; padding: 8px; }
+  .xp-btn { font-size: 16px; height: 44px; }
+  .xp-login-box { width: 92vw; max-width: 280px; padding: 12px; }
+  .xp-title { font-size: 1.3rem; margin-bottom: 12px; }
+  .xp-input { height: 44px; font-size: 16px; padding: 0 10px; }
+}
+
+/* ===== SAFARI iOS FIX ===== */
+@supports (-webkit-touch-callout: none) {
+  .xp-input, .folha-textarea, .xp-btn {
+    -webkit-appearance: none;
+    border-radius: 8px;
+    -webkit-border-radius: 8px;
+  }
+  .xp-input:focus, .folha-textarea:focus { transform: scale(1); }
+}
+
+/* ===== UTILITIES ===== */
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.w-100 { width: 100%; }
+.mb-10 { margin-bottom: 10px; }
+.mb-15 { margin-bottom: 15px; }
+.mb-20 { margin-bottom: 20px; }

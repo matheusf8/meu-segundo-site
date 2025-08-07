@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import "../estilos/login-xp.css"; // Estilo inspirado no Windows XP
+import { api } from '../config/api.js';
+import "../estilos/folha-caderno.css";  /* ✅ TROCAR POR ESTE */
 
 function Login({ irParaCadastro, loginSucesso }) {
   const [email, setEmail] = useState("");
@@ -8,29 +9,20 @@ function Login({ irParaCadastro, loginSucesso }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMensagem(""); // Limpa mensagem anterior
+    setMensagem("");
 
     try {
-      const resposta = await fetch("http://127.0.0.1:8000/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, senha }),
-      });
-
-      if (resposta.ok) {
-        const dados = await resposta.json();
-        setMensagem(dados.mensagem || "Login realizado com sucesso!");
+      const resposta = await api.post("/login", { email, senha });
+      
+      // api.post já retorna JSON diretamente
+      if (resposta.mensagem) {
+        setMensagem(resposta.mensagem);
         setTimeout(() => {
           loginSucesso(email);
-        }, 1500); // Redireciona após 1,5s
-      } else {
-        const erro = await resposta.json();
-        setMensagem(erro.detail || "E-mail ou senha incorretos.");
+        }, 1500);
       }
-    } catch (err) {
-      setMensagem("Erro ao conectar ao servidor.");
+    } catch (error) {
+      setMensagem("E-mail ou senha incorretos.");
     }
   };
 
@@ -42,6 +34,7 @@ function Login({ irParaCadastro, loginSucesso }) {
           <div className="xp-form-group">
             <label>E-mail:</label>
             <input
+              className="xp-input"    /* ✅ ADICIONAR CLASSE */
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -51,6 +44,7 @@ function Login({ irParaCadastro, loginSucesso }) {
           <div className="xp-form-group">
             <label>Senha:</label>
             <input
+              className="xp-input"    /* ✅ ADICIONAR CLASSE */
               type="password"
               value={senha}
               onChange={(e) => setSenha(e.target.value)}

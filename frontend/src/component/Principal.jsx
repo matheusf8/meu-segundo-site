@@ -1,14 +1,14 @@
 import React from "react";
-import "../estilos/login-xp.css";
+import "../estilos/folha-caderno.css";
 
 function Principal({ usuario, sair, setPagina }) {
   return (
     <div className="xp-login-container">
       <div className="xp-login-box">
         <h2 className="xp-title">Bem-vindo(a) ao Meu Diário!</h2>
-        <div style={{ fontSize: "1.3rem", marginBottom: "24px", textAlign: "center" }}>
+        <p className="welcome-message">
           Olá, <b>{usuario.email}</b>
-        </div>
+        </p>
         <button
           className="xp-btn"
           style={{ marginBottom: "16px" }}

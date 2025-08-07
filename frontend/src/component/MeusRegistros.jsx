@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { api } from '../config/api.js';
 import "../estilos/folha-caderno.css";
 
 function MeusRegistros({ usuario, voltar }) {
@@ -10,10 +11,13 @@ function MeusRegistros({ usuario, voltar }) {
   const [sucesso, setSucesso] = useState(false);
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/registros?email=${usuario.email}`)
-      .then((res) => res.json())
+    api.get(`/registros?email=${usuario.email}`)
       .then((data) => {
         setRegistros(data);
+        setCarregando(false);
+      })
+      .catch(() => {
+        setMensagem("Erro ao carregar registros.");
         setCarregando(false);
       });
   }, [usuario.email]);
@@ -38,50 +42,35 @@ function MeusRegistros({ usuario, voltar }) {
 
   const salvarEdicao = async (reg) => {
     try {
-      const resposta = await fetch(`http://127.0.0.1:8000/registro/${reg.id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ texto: novoTexto }),
-      });
-      const data = await resposta.json();
-      if (resposta.ok) {
-        setMensagem(data.mensagem || "Registro salvo com sucesso!");
-        setSucesso(true);
-        setEditando(null);
-        // Atualiza a lista
-        setCarregando(true);
-        fetch(`http://127.0.0.1:8000/registros?email=${usuario.email}`)
-          .then((res) => res.json())
-          .then((data) => {
-            setRegistros(data);
-            setCarregando(false);
-          });
-      } else {
-        setMensagem("Erro ao salvar registro.");
-        setSucesso(false);
-      }
+      await api.put(`/registro/${reg.id}`, { texto: novoTexto });
+      
+      setMensagem("Registro salvo com sucesso!");
+      setSucesso(true);
+      setEditando(null);
+      
+      // Recarregar lista
+      setCarregando(true);
+      const data = await api.get(`/registros?email=${usuario.email}`);
+      setRegistros(data);
+      setCarregando(false);
     } catch {
-      setMensagem("Erro ao conectar ao servidor.");
+      setMensagem("Erro ao salvar registro.");
       setSucesso(false);
     }
   };
 
   const excluirRegistro = async (registro) => {
     try {
-      const resposta = await fetch(`http://127.0.0.1:8000/registro/${registro.id}`, {
-        method: "DELETE",
-      });
-      const data = await resposta.json();
-      setMensagem(data.mensagem || "Registro excluído com sucesso!");
+      await api.delete(`/registro/${registro.id}`);
+      
+      setMensagem("Registro excluído com sucesso!");
       setSucesso(true);
-      // Atualiza a lista
+      
+      // Recarregar lista
       setCarregando(true);
-      fetch(`http://127.0.0.1:8000/registros?email=${usuario.email}`)
-        .then((res) => res.json())
-        .then((data) => {
-          setRegistros(data);
-          setCarregando(false);
-        });
+      const data = await api.get(`/registros?email=${usuario.email}`);
+      setRegistros(data);
+      setCarregando(false);
     } catch {
       setMensagem("Erro ao conectar ao servidor.");
       setSucesso(false);
@@ -89,50 +78,88 @@ function MeusRegistros({ usuario, voltar }) {
   };
 
   return (
-    <div className="folha-caderno">
-      <h2>Meus Registros</h2>
+    <div className="folha-caderno" style={{ paddingTop: "50px" }}>
+      <h2 style={{ marginTop: "0px", marginBottom: "20px" }}>Meus Registros</h2>
+      
       {carregando ? (
-        <div style={{ color: "#e2c98f", textAlign: "center" }}>Carregando...</div>
+        <p style={{ color: "#e2c98f", textAlign: "center" }}>Carregando...</p>
       ) : registros.length === 0 ? (
-        <div style={{ color: "#e2c98f", textAlign: "center" }}>Nenhum registro encontrado.</div>
+        <p style={{ color: "#e2c98f", textAlign: "center" }}>Nenhum registro encontrado.</p>
       ) : (
         <div className="folha-lista-registros">
-          <ul style={{ width: "100%", padding: 0, listStyle: "none" }}>
+          <ul style={{ width: "100%", padding: "0", listStyle: "none", margin: "0" }}>
             {registros.map((reg, idx) => (
-              <li key={reg.id || idx} style={{
-                background: "#232526",
-                border: "1px solid #e2c98f",
-                borderRadius: "10px",
-                color: "#ffe9b3",
-                marginBottom: "12px",
-                padding: "12px"
-              }}>
+              <li
+                key={reg.id || idx}
+                style={{
+                  background: "#232526",
+                  border: "1px solid #e2c98f",
+                  borderRadius: "10px",
+                  color: "#ffe9b3",
+                  marginBottom: "12px",
+                  padding: "12px",
+                }}
+              >
                 {editando === reg.id ? (
                   <>
                     <textarea
                       className="folha-textarea"
                       value={novoTexto}
                       onChange={e => setNovoTexto(e.target.value)}
-                      style={{ marginBottom: "8px" }}
                     />
                     <div style={{ display: "flex", gap: "8px", marginTop: "8px" }}>
-                      <button className="xp-btn" style={{ fontSize: "0.95rem", height: "32px", width: "80px" }} onClick={() => salvarEdicao(reg)}>
+                      <button 
+                        className="xp-btn"
+                        style={{ fontSize: "0.9rem", height: "32px", width: "80px" }}
+                        onClick={() => salvarEdicao(reg)}
+                      >
                         Salvar
                       </button>
-                      <button className="xp-btn" style={{ fontSize: "0.95rem", height: "32px", width: "80px", background: "#a52a2a" }} onClick={cancelarEdicao}>
+                      <button 
+                        className="xp-btn"
+                        style={{ 
+                          fontSize: "0.9rem", 
+                          height: "32px", 
+                          width: "80px",
+                          background: "#a52a2a"
+                        }}
+                        onClick={cancelarEdicao}
+                      >
                         Cancelar
                       </button>
                     </div>
                   </>
                 ) : (
                   <>
-                    <div style={{ fontSize: "1rem", marginBottom: "6px" }}>{reg.texto}</div>
-                    <div style={{ textAlign: "right", fontSize: "0.95rem", color: "#e2c98f" }}>{reg.data}</div>
+                    <div style={{ fontSize: "1rem", marginBottom: "6px", lineHeight: "1.4" }}>
+                      {reg.texto}
+                    </div>
+                    <div style={{ 
+                      textAlign: "right", 
+                      fontSize: "0.95rem", 
+                      color: "#e2c98f",
+                      marginBottom: "8px"
+                    }}>
+                      {reg.data}
+                    </div>
                     <div style={{ display: "flex", gap: "8px", marginTop: "8px" }}>
-                      <button className="xp-btn" style={{ fontSize: "0.9rem", height: "32px", width: "80px" }} onClick={() => editarRegistro(reg)}>
+                      <button 
+                        className="xp-btn"
+                        style={{ fontSize: "0.9rem", height: "32px", width: "80px" }}
+                        onClick={() => editarRegistro(reg)}
+                      >
                         Editar
                       </button>
-                      <button className="xp-btn" style={{ fontSize: "0.9rem", height: "32px", width: "80px", background: "#a52a2a" }} onClick={() => excluirRegistro(reg)}>
+                      <button 
+                        className="xp-btn"
+                        style={{ 
+                          fontSize: "0.9rem", 
+                          height: "32px", 
+                          width: "80px",
+                          background: "#a52a2a"
+                        }}
+                        onClick={() => excluirRegistro(reg)}
+                      >
                         Excluir
                       </button>
                     </div>
@@ -143,7 +170,9 @@ function MeusRegistros({ usuario, voltar }) {
           </ul>
         </div>
       )}
+      
       <button className="xp-btn" onClick={voltar}>Voltar</button>
+      
       {mensagem && (
         <div className={`folha-feedback ${sucesso ? "sucesso" : "erro"}`}>
           {mensagem}

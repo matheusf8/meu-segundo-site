@@ -39,7 +39,8 @@ export const api = {
       },
       body: JSON.stringify(data),
     });
-    return response.json();
+    
+    return response.json();  // ✅ ADICIONAR ESTA LINHA
   },
   
   // PUT
