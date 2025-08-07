@@ -73,3 +73,8 @@ def deletar_registro(id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Registro não encontrado.")
     crud.deletar_registro(db, id)
     return {"mensagem": "Registro deletado com sucesso!"}
+
+@router.get("/admin/usuarios")
+def ver_usuarios_admin(db: Session = Depends(get_db)):
+    usuarios = db.query(Usuario).all()
+    return [{"id": u.id, "email": u.email} for u in usuarios]

@@ -1,5 +1,7 @@
 {
   "projects": {
     "default": "meu-diario-e513c"
-  }
+  },
+  "targets": {},
+  "etags": {}
 }
