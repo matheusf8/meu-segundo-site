@@ -26,21 +26,20 @@ def get_db():
         db.close()
 
 @router.post("/cadastro")
-def cadastro(usuario: schemas.UsuarioCreate, db: Session = Depends(get_db)):
-    # Validações mais detalhadas
-    if not usuario.senha:
-        raise HTTPException(status_code=400, detail="Senha é obrigatória.")
+def cadastrar_usuario(usuario: schemas.UsuarioCreate, db: Session = Depends(get_db)):
+    try:
+        # Verificar se usuário já existe
+        usuario_existente = db.query(Usuario).filter(Usuario.email == usuario.email).first()
+        if usuario_existente:
+            raise HTTPException(status_code=400, detail="Email já cadastrado.")
+        
+        # Criar usuário
+        novo_usuario = crud.criar_usuario(db, usuario.email, usuario.senha)
+        return {"mensagem": "Usuário cadastrado com sucesso!"}
     
-    if len(usuario.senha) != 6:
-        raise HTTPException(status_code=400, detail="A senha deve ter exatamente 6 dígitos.")
-    
-    if not usuario.senha.isdigit():
-        raise HTTPException(status_code=400, detail="A senha deve conter apenas números.")
-    
-    novo_usuario = crud.criar_usuario(db, usuario)
-    if not novo_usuario:
-        raise HTTPException(status_code=400, detail="E-mail já cadastrado.")
-    return {"mensagem": "Cadastro realizado com sucesso!"}
+    except Exception as e:
+        print(f"Erro no cadastro: {e}")  # Log do erro
+        raise HTTPException(status_code=500, detail=f"Erro interno: {str(e)}")
 
 @router.post("/login")
 def login(usuario: schemas.UsuarioLogin, db: Session = Depends(get_db)):

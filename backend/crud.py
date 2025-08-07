@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 from passlib.context import CryptContext
 from fastapi import HTTPException
+import bcrypt
 
 # Imports que funcionam tanto local quanto no Render
 try:
@@ -16,14 +17,20 @@ except ImportError:
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 # Usuário
-def criar_usuario(db: Session, usuario: schemas.UsuarioCreate):
-    if db.query(Usuario).filter(Usuario.email == usuario.email).first():
-        return None  # E-mail já existe
-    db_usuario = Usuario(email=usuario.email, senha=pwd_context.hash(usuario.senha))
-    db.add(db_usuario)
+def criar_usuario(db: Session, email: str, senha: str):
+    # Hash da senha
+    senha_hash = bcrypt.hashpw(senha.encode('utf-8'), bcrypt.gensalt())
+    
+    # Criar usuário
+    usuario = Usuario(
+        email=email, 
+        senha=senha_hash.decode('utf-8')  # ✅ Campo correto: 'senha'
+    )
+    
+    db.add(usuario)
     db.commit()
-    db.refresh(db_usuario)
-    return db_usuario
+    db.refresh(usuario)
+    return usuario
 
 def autenticar_usuario(db: Session, email: str, senha: str):
     usuario = db.query(Usuario).filter(Usuario.email == email).first()
