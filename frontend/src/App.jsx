@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { api } from "./config/api.js"; // Adicionar esta linha
+import { api } from "./config/api.js";
 import Login from "./component/Login";
 import Cadastro from "./component/Cadastro";
 import Principal from "./component/Principal";
@@ -26,13 +26,13 @@ function App() {
         <Login
           irParaCadastro={() => setPagina("cadastro")}
           loginSucesso={handleLoginSucesso}
-          api={api} // Passar a API
+          api={api}
         />
       )}
       {pagina === "cadastro" && (
         <Cadastro
           irParaLogin={() => setPagina("login")}
-          api={api} // Passar a API
+          api={api}
         />
       )}
       {pagina === "principal" && (
@@ -42,14 +42,14 @@ function App() {
         <NovoRegistro
           usuario={usuario}
           voltar={() => setPagina("principal")}
-          api={api} // Passar a API
+          api={api}
         />
       )}
       {pagina === "meusRegistros" && (
         <MeusRegistros
           usuario={usuario}
           voltar={() => setPagina("principal")}
-          api={api} // Passar a API
+          api={api}
         />
       )}
     </>

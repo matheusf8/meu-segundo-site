@@ -78,3 +78,13 @@ def deletar_registro(id: int, db: Session = Depends(get_db)):
 def ver_usuarios_admin(db: Session = Depends(get_db)):
     usuarios = db.query(Usuario).all()
     return [{"id": u.id, "email": u.email} for u in usuarios]
+
+@router.get("/admin/registros")
+def ver_todos_registros_admin(db: Session = Depends(get_db)):
+    try:
+        from models import Registro
+    except ImportError:
+        from .models import Registro
+    
+    registros = db.query(Registro).all()
+    return registros
