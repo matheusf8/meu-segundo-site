@@ -22,8 +22,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Cria as tabelas no banco de dados
-Base.metadata.create_all(bind=engine)
+# TEMPORÁRIO - Recriar tabelas com novo schema
+from database import engine
+import models
+
+# Deletar e recriar tabelas
+models.Base.metadata.drop_all(bind=engine)
+models.Base.metadata.create_all(bind=engine)
 
 # Rotas da API
 app.include_router(usuario.router)
