@@ -1,14 +1,14 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from database import Base, engine  # SEM backend. na frente
-from routers import usuario        # SEM backend. na frente
+from .database import Base, engine  # Adicione o ponto
+from .routers import usuario        # Adicione o ponto
 import os
 
 app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["https://meu-diario-e513c.web.app", "http://localhost:5173"], # Firebase + local dev
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

@@ -1,5 +1,7 @@
-from sqlalchemy import Column, Integer, String
-from database import Base
+from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey
+from .database import Base  # Adicionar ponto
+from sqlalchemy.orm import relationship
+from datetime import datetime
 
 class Usuario(Base):
     __tablename__ = "usuarios"

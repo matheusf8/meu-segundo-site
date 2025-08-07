@@ -1,4 +1,6 @@
 from pydantic import BaseModel, EmailStr
+from datetime import datetime
+from typing import Optional
 
 class UsuarioCreate(BaseModel):
     email: EmailStr
@@ -23,4 +25,4 @@ class RegistroOut(RegistroBase):
     id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True  # Trocar orm_mode = True por esta linha

@@ -3,5 +3,6 @@ uvicorn
 sqlalchemy
 pydantic
 python-multipart
-passlib
+passlib[bcrypt]
 email-validator
+psycopg2-binary

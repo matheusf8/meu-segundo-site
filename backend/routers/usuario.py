@@ -1,8 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
-from database import SessionLocal  # Remove ..
-import crud, schemas               # Remove ..
+from ..database import SessionLocal
+from ..models import Usuario
+from .. import schemas  # Corrigir este import
+from .. import crud     # Corrigir este import
 
 router = APIRouter()
 
@@ -15,8 +17,16 @@ def get_db():
 
 @router.post("/cadastro")
 def cadastro(usuario: schemas.UsuarioCreate, db: Session = Depends(get_db)):
+    # Validações mais detalhadas
+    if not usuario.senha:
+        raise HTTPException(status_code=400, detail="Senha é obrigatória.")
+    
     if len(usuario.senha) != 6:
-        raise HTTPException(status_code=400, detail="A senha deve ter 6 dígitos.")
+        raise HTTPException(status_code=400, detail="A senha deve ter exatamente 6 dígitos.")
+    
+    if not usuario.senha.isdigit():
+        raise HTTPException(status_code=400, detail="A senha deve conter apenas números.")
+    
     novo_usuario = crud.criar_usuario(db, usuario)
     if not novo_usuario:
         raise HTTPException(status_code=400, detail="E-mail já cadastrado.")
