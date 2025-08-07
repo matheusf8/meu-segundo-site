@@ -14,7 +14,7 @@ class Usuario(Base):
     __tablename__ = "usuarios"
     id = Column(Integer, primary_key=True, index=True)
     email = Column(String(120), unique=True, nullable=False)
-    senha = Column(String(6), nullable=False)
+    senha = Column(String(255), nullable=False)  # ✅ Para comportar hash bcrypt
 
 class Registro(Base):
     __tablename__ = "registros"
